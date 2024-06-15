@@ -3,6 +3,7 @@ export class OrderList {
         this.fetchedData = {}
         this.finishedData = []
         this.fetchData()
+        this.initializeRenderButton()
     }
 
     async fetchData(){
@@ -17,23 +18,34 @@ export class OrderList {
         this.proceedData()
     }
 
-    findProductById (list, id) {
+    findItemById (list, id) {
         return list.find((obj) => obj.id === id).name
     }
     proceedData() {
         for (let i = 0; i < this.fetchedData[1].length; i++) {
             const transactionId = this.fetchedData[1][i].id;
             const productId = this.fetchedData[1][i].productId
-            const productName = this.findProductById(this.fetchedData[2], productId)
+            const productName = this.findItemById(this.fetchedData[2], productId)
             const buyerId = this.fetchedData[1][i].buyerId
-            const buyerName = this.findProductById(this.fetchedData[0], buyerId)
+            const buyerName = this.findItemById(this.fetchedData[0], buyerId)
             this.finishedData.push({transactionId: transactionId, productName: productName, buyerName: buyerName})
         }
         console.log(this.finishedData)
     }
+    initializeRenderButton = () => {
+        const renderButton = document.createElement('button')
+        document.body.append(renderButton)
+        renderButton.innerHTML = "RENDER"
+        this.addEventListenerToRenderButton(renderButton)
+    }
 
+    addEventListenerToRenderButton = (button) => {
+        button.addEventListener('click', this.render);
+    }
 
-
+    render = () => {
+        console.log("render")
+    }
 
     createOrderTile(order, buyer) {
         const tile = document.createElement('div');
@@ -41,9 +53,9 @@ export class OrderList {
         tile.style.width = '200px';
         tile.style.height = '100px';
         const orderDetails = document.createElement('span');
-        orderDetails.innerText = `order: ${order.id} \n ${order.product.amount}: ${order.product.name}`;
+        orderDetails.innerText = `order: ${order.id} \n 1: ${order.productName}`;
         const buyerDetails = document.createElement('span');
-        buyerDetails.innerHTML = `bought by: ${buyer.name}`;
+        buyerDetails.innerHTML = `bought by: ${buyer}`;
 
         tile.append(orderDetails);
         tile.append(document.createElement('p'));
