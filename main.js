@@ -1,4 +1,3 @@
-import {OrderList} from "./OrderList.js";
-
+import { OrderList } from "./OrderList.js";
 
 const order = new OrderList();
