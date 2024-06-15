@@ -2,8 +2,11 @@ export class OrderList {
     constructor(){
         this.fetchedData = {}
         this.finishedData = []
+        this.ticketsRendered = 0;
+        this.ticketsToBeRendered = 0;
         this.fetchData()
         this.initializeRenderButton()
+
     }
 
     async fetchData(){
@@ -31,12 +34,14 @@ export class OrderList {
             this.finishedData.push({transactionId: transactionId, productName: productName, buyerName: buyerName})
         }
         console.log(this.finishedData)
+        this.ticketsToBeRendered = this.finishedData.length
     }
     initializeRenderButton = () => {
         const renderButton = document.createElement('button')
         document.body.append(renderButton)
         renderButton.innerHTML = "RENDER"
         this.addEventListenerToRenderButton(renderButton)
+
     }
 
     addEventListenerToRenderButton = (button) => {
@@ -44,11 +49,21 @@ export class OrderList {
     }
 
     render = () => {
-        console.log("render")
+        if(this.ticketsToBeRendered > 0) {
+            const order = {id: this.finishedData[this.ticketsRendered].transactionId, productName:this.finishedData[this.ticketsRendered].productName}
+            const buyer = this.finishedData[this.ticketsRendered].buyerName
+            this.createOrderTile(order, buyer)
+            this.ticketsRendered = this.ticketsRendered + 1
+            this.ticketsToBeRendered = this.ticketsToBeRendered - 1
+        } else {
+            console.log("no more tickets to be printed")
+        }
+
     }
 
     createOrderTile(order, buyer) {
         const tile = document.createElement('div');
+        document.body.append(tile)
         tile.style.border = '1px solid black';
         tile.style.width = '200px';
         tile.style.height = '100px';
