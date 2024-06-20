@@ -9,7 +9,7 @@ export class OrderList {
   }
 
   async fetchData() {
-    await Promise.all([
+    const responsesArray = await Promise.all([
       fetch(
         "https://my-json-server.typicode.com/Solnick/fake-orders-db/buyers",
       ),
@@ -19,12 +19,8 @@ export class OrderList {
       fetch(
         "https://my-json-server.typicode.com/Solnick/fake-orders-db/products",
       ),
-    ])
-      .then((responsesArray) =>
-        Promise.all(responsesArray.map((res) => res.json())),
-      )
-      .then((data) => (this.fetchedData = data))
-      .then((dataArray) => console.log(dataArray));
+    ]);
+    this.fetchedData = await Promise.all(responsesArray.map((res) => res.json()));
     this.transformData();
   }
 
