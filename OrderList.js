@@ -31,6 +31,7 @@ export class OrderList {
   findItemById(list, id) {
     return list.find((obj) => obj.id === id).name;
   }
+  
   proceedData() {
     for (let i = 0; i < this.fetchedData[1].length; i++) {
       const transactionId = this.fetchedData[1][i].id;
