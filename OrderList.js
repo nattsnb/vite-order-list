@@ -25,14 +25,14 @@ export class OrderList {
       )
       .then((data) => (this.fetchedData = data))
       .then((dataArray) => console.log(dataArray));
-    this.proceedData();
+    this.transformData();
   }
 
   findItemById(list, id) {
     return list.find((obj) => obj.id === id).name;
   }
-  
-  proceedData() {
+
+  transformData() {
     for (let i = 0; i < this.fetchedData[1].length; i++) {
       const transactionId = this.fetchedData[1][i].id;
       const productId = this.fetchedData[1][i].productId;
