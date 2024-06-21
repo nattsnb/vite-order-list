@@ -56,17 +56,13 @@ export class OrderList {
   };
 
   render = () => {
-    if (this.ticketsToBeRendered > 0) {
+    for (let i = 0; i <=this.ticketsToBeRendered; i++) {
       const order = {
         id: this.finishedData[this.ticketsRendered].transactionId,
         productName: this.finishedData[this.ticketsRendered].productName,
       };
       const buyer = this.finishedData[this.ticketsRendered].buyerName;
       this.createOrderTile(order, buyer);
-      this.ticketsRendered = this.ticketsRendered + 1;
-      this.ticketsToBeRendered = this.ticketsToBeRendered - 1;
-    } else {
-      console.log("no more tickets to be printed");
     }
   };
 
