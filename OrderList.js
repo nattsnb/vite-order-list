@@ -41,7 +41,6 @@ export class OrderList {
         buyerName: buyerName,
       });
     }
-    console.log(this.finishedData);
     this.ticketsToBeRendered = this.finishedData.length;
   }
   initializeRenderButton = () => {
