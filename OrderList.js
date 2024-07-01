@@ -56,13 +56,14 @@ export class OrderList {
   };
 
   render = () => {
-    for (let i = 0; i <=this.ticketsToBeRendered; i++) {
+    for (let i = 0; i < this.ticketsToBeRendered; i++) {
       const order = {
         id: this.finishedData[this.ticketsRendered].transactionId,
         productName: this.finishedData[this.ticketsRendered].productName,
       };
       const buyer = this.finishedData[this.ticketsRendered].buyerName;
       this.createOrderTile(order, buyer);
+      this.ticketsRendered = this.ticketsRendered + 1;
     }
   };
 
