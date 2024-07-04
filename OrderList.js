@@ -9,23 +9,18 @@ export class OrderList {
   }
 
   async fetchData() {
-    const buyersResponse = await fetch(
-      "https://my-json-server.typicode.com/Solnick/fake-orders-db/buyers",
-    );
-    const buyersData = await buyersResponse.json();
-    const ordersResponse = await fetch(
-      "https://my-json-server.typicode.com/Solnick/fake-orders-db/orders",
-    );
-    const ordersData = await ordersResponse.json();
-    const productsResponse = await fetch(
-      "https://my-json-server.typicode.com/Solnick/fake-orders-db/products",
-    );
-    const productsData = await productsResponse.json();
-    this.fetchedData = {
-      buyers: buyersData,
-      orders: ordersData,
-      products: productsData,
-    };
+    const responsesArray = await Promise.all([
+      fetch(
+        "https://my-json-server.typicode.com/Solnick/fake-orders-db/buyers",
+      ),
+      fetch(
+        "https://my-json-server.typicode.com/Solnick/fake-orders-db/orders",
+      ),
+      fetch(
+        "https://my-json-server.typicode.com/Solnick/fake-orders-db/products",
+      ),
+    ]);
+    this.fetchedData = await Promise.all(responsesArray.map((res) => res.json()));
     this.transformData();
   }
 
@@ -34,15 +29,12 @@ export class OrderList {
   }
 
   transformData() {
-    for (let i = 0; i < this.fetchedData.orders.length; i++) {
-      const transactionId = this.fetchedData.orders[i].id;
-      const productId = this.fetchedData.orders[i].productId;
-      const productName = this.findItemById(
-        this.fetchedData.products,
-        productId,
-      );
-      const buyerId = this.fetchedData.orders[i].buyerId;
-      const buyerName = this.findItemById(this.fetchedData.buyers, buyerId);
+    for (let i = 0; i < this.fetchedData[1].length; i++) {
+      const transactionId = this.fetchedData[1][i].id;
+      const productId = this.fetchedData[1][i].productId;
+      const productName = this.findItemById(this.fetchedData[2], productId);
+      const buyerId = this.fetchedData[1][i].buyerId;
+      const buyerName = this.findItemById(this.fetchedData[0], buyerId);
       this.finishedData.push({
         transactionId: transactionId,
         productName: productName,
