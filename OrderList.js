@@ -20,7 +20,10 @@ export class OrderList {
         "https://my-json-server.typicode.com/Solnick/fake-orders-db/products",
       ),
     ]);
-    this.fetchedData = await Promise.all(responsesArray.map((res) => res.json()));
+    const dataToProcess = await Promise.all(responsesArray.map((res) => res.json()));
+    this.fetchedData.buyers = dataToProcess[0]
+    this.fetchedData.orders = dataToProcess[1]
+    this.fetchedData.products = dataToProcess[2]
     this.transformData();
   }
 
@@ -28,13 +31,13 @@ export class OrderList {
     return list.find((obj) => obj.id === id).name;
   }
 
-  transformData() {
-    for (let i = 0; i < this.fetchedData[1].length; i++) {
-      const transactionId = this.fetchedData[1][i].id;
-      const productId = this.fetchedData[1][i].productId;
-      const productName = this.findItemById(this.fetchedData[2], productId);
-      const buyerId = this.fetchedData[1][i].buyerId;
-      const buyerName = this.findItemById(this.fetchedData[0], buyerId);
+  transformData = () => {
+    for (let i = 0; i < this.fetchedData.orders.length; i++) {
+      const transactionId = this.fetchedData.orders[i].id;
+      const productId = this.fetchedData.orders[i].productId;
+      const productName = this.findItemById(this.fetchedData.products, productId);
+      const buyerId = this.fetchedData.orders[i].buyerId;
+      const buyerName = this.findItemById(this.fetchedData.buyers, buyerId);
       this.finishedData.push({
         transactionId: transactionId,
         productName: productName,
